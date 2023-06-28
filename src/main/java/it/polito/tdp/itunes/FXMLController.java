@@ -6,6 +6,8 @@ package it.polito.tdp.itunes;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.itunes.db.ItunesDAO;
 import it.polito.tdp.itunes.model.Album;
 import it.polito.tdp.itunes.model.Model;
 import javafx.event.ActionEvent;
@@ -18,7 +20,9 @@ import javafx.scene.control.TextField;
 public class FXMLController {
 	
 	private Model model;
-
+	private ItunesDAO dao = new ItunesDAO();
+	
+	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
@@ -61,6 +65,12 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	int n =Integer.parseInt(txtN.getText());
+    	
+    	model.BuildGraph(n);
+    	txtResult.appendText("N vertici : "+model.nVert());
+    	txtResult.appendText("N archi : "+model.nArch());
+    	
     	
     }
 

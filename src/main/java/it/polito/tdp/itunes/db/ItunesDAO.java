@@ -139,4 +139,69 @@ public class ItunesDAO {
 		return result;
 	}
 	
+	public List<Album> getVert(int n){
+		
+		final String sql = "SELECT a.* "+
+		"FROM track t, album a "+
+		"WHERE t.AlbumId = a.AlbumId "+
+		"GROUP BY t.AlbumId "+
+		"HAVING COUNT(*)>? ";
+		
+				
+				
+				
+				
+		List<Album> result = new LinkedList<>();
+		
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, n);
+			ResultSet res = st.executeQuery();
+
+			while (res.next()) {
+				result.add(new Album(res.getInt("AlbumId"), res.getString("Title")));
+
+			}
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Error");
+		}
+		return result;
+	}
+
+	
+	public int getPesoEdge(int idAlb){
+		
+		final String sql = 
+				"SELECT COUNT(*) AS conto "+
+				"FROM track t "+
+				"WHERE t.AlbumId = ? ";
+				
+				
+			int peso=0;	
+		
+		
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, idAlb);
+			ResultSet res = st.executeQuery();
+
+			while (res.next()) {
+
+				peso = res.getInt("conto");
+				
+			}
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Error");
+		}
+		return peso;
+	}
+	
+	
+	
 }
